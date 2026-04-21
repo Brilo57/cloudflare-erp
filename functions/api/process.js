@@ -1,6 +1,7 @@
 const TOKEN_SAFETY_BUFFER_MS = 5 * 60 * 1000;
 const SESSION_COOKIE = "erp_session";
 const SESSION_TTL_SECONDS = 12 * 60 * 60;
+const KINGDEE_TIME_ZONE = "Asia/Shanghai";
 
 let tokenCache = {
   accessToken: "",
@@ -320,20 +321,24 @@ function stripTrailingSlash(value) {
 }
 
 function formatKingdeeTimestamp(date) {
-  const pad = (value) => String(value).padStart(2, "0");
-  return [
-    date.getFullYear(),
-    "-",
-    pad(date.getMonth() + 1),
-    "-",
-    pad(date.getDate()),
-    " ",
-    pad(date.getHours()),
-    ":",
-    pad(date.getMinutes()),
-    ":",
-    pad(date.getSeconds()),
-  ].join("");
+  const formatter = new Intl.DateTimeFormat("zh-CN", {
+    timeZone: KINGDEE_TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+  const parts = formatter.formatToParts(date);
+  const map = Object.fromEntries(
+    parts
+      .filter((part) => part.type !== "literal")
+      .map((part) => [part.type, part.value])
+  );
+
+  return `${map.year}-${map.month}-${map.day} ${map.hour}:${map.minute}:${map.second}`;
 }
 
 async function sha256Hex(input) {
