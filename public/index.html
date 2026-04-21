@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
+    />
+    <title>流程终止工具</title>
+    <meta
+      name="description"
+      content="登录后查询流程实例，并在确认后执行终止操作。"
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="topbar">
+        <div class="brand-mark" aria-hidden="true">CY</div>
+        <div class="topbar-copy">
+          <p class="eyebrow">Cloudflare Edge Tool</p>
+          <h1>流程终止工具</h1>
+          <p class="subcopy">登录后即可查询单据并执行终止操作。</p>
+        </div>
+      </header>
+
+      <section class="panel" id="loginPanel">
+        <div class="panel-head">
+          <h2>安全登录</h2>
+          <p>使用访问密码解锁工具。登录状态仅保留在当前浏览器。</p>
+        </div>
+
+        <form id="loginForm" class="stack">
+          <label class="field">
+            <span>访问密码</span>
+            <input
+              id="passwordInput"
+              name="password"
+              type="password"
+              placeholder="输入强密码"
+              autocomplete="current-password"
+              required
+            />
+          </label>
+          <button id="loginButton" class="button button-primary" type="submit">
+            登录并继续
+          </button>
+        </form>
+      </section>
+
+      <section class="panel hidden" id="toolPanel">
+        <div class="panel-head panel-head-inline">
+          <div>
+            <h2>主操作区</h2>
+            <p>输入单据编号，查询到流程后可直接终止。</p>
+          </div>
+          <button id="logoutButton" class="button button-secondary" type="button">
+            退出
+          </button>
+        </div>
+
+        <form id="queryForm" class="stack">
+          <label class="field">
+            <span>单据编号</span>
+            <div class="inline-input">
+              <input
+                id="billNoInput"
+                name="billNo"
+                type="text"
+                inputmode="text"
+                placeholder="例如 PR11000..."
+                autocomplete="off"
+                required
+              />
+              <button id="queryButton" class="button button-primary" type="submit">
+                查询
+              </button>
+            </div>
+          </label>
+        </form>
+
+        <div class="message hidden" id="resultMessage" role="status" aria-live="polite"></div>
+
+        <section class="result-card hidden" id="resultCard">
+          <div class="result-head">
+            <div>
+              <p class="eyebrow">查询结果</p>
+              <h3 id="resultTitle">--</h3>
+            </div>
+            <span class="status-pill" id="resultState">--</span>
+          </div>
+
+          <dl class="result-grid">
+            <div>
+              <dt>单据编号</dt>
+              <dd id="resultBillNo">--</dd>
+            </div>
+            <div>
+              <dt>发起人</dt>
+              <dd id="resultStartUser">--</dd>
+            </div>
+            <div>
+              <dt>当前处理人</dt>
+              <dd id="resultHandler">--</dd>
+            </div>
+            <div>
+              <dt>流程状态</dt>
+              <dd id="resultRunningState">--</dd>
+            </div>
+          </dl>
+
+          <div class="notice">
+            <strong>注意：</strong>终止操作不可撤销，请在核对单据编号和流程标题后再继续。
+          </div>
+
+          <button id="abortButton" class="button button-danger" type="button">
+            终止流程
+          </button>
+        </section>
+      </section>
+    </main>
+
+    <dialog class="confirm-dialog" id="confirmDialog">
+      <form method="dialog" class="confirm-card">
+        <h2>确认终止</h2>
+        <p>确定要强制终止当前流程吗？该操作无法恢复。</p>
+        <div class="confirm-actions">
+          <button class="button button-secondary" value="cancel">取消</button>
+          <button class="button button-danger" id="confirmAbortButton" value="confirm">
+            确认终止
+          </button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>
