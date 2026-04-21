@@ -68,7 +68,7 @@ function clearResult() {
 
 function renderResult(data) {
   state.processInstanceId = data.processInstanceId;
-  renderResultSummary(data.title || "未知流程");
+  renderResultSummary(data.title || "未知流程", data.billNo || "");
   elements.resultBillNo.textContent = data.billNo || "--";
   elements.resultStartUser.textContent = data.startUser || "--";
   elements.resultHandler.textContent = data.currentHandler || "--";
@@ -85,26 +85,55 @@ function renderResult(data) {
   elements.resultCard.classList.remove("hidden");
 }
 
-function renderResultSummary(text) {
-  const parts = splitSummaryText(text);
+function renderResultSummary(text, billNo) {
+  const parts = splitSummaryText(text, billNo);
   elements.resultSummary.innerHTML = parts
     .map((part) => `<span class="result-summary-item">${escapeHtml(part)}</span>`)
     .join("");
 }
 
-function splitSummaryText(text) {
+function splitSummaryText(text, billNo) {
   const normalized = String(text || "").replace(/\s+/g, " ").trim();
+  const normalizedBillNo = String(billNo || "").trim();
 
   if (!normalized) {
     return ["未知流程"];
   }
 
-  const parts = normalized
-    .split(/\s+(?=[^\s：:]+[：:])/)
-    .map((part) => part.trim())
-    .filter(Boolean);
+  let summary = normalized;
+  if (normalizedBillNo) {
+    summary = summary.replaceAll(normalizedBillNo, " ").replace(/\s+/g, " ").trim();
+  }
+
+  const extracted = extractCompanyAndDocType(summary);
+  const parts = extracted.filter(Boolean);
 
   return parts.length ? parts : [normalized];
+}
+
+function extractCompanyAndDocType(text) {
+  const companyPatterns = [
+    /(.*?(?:有限责任公司|股份有限公司|集团有限公司|有限公司))/,
+    /(.*?(?:公司))/,
+  ];
+
+  let companyName = "";
+  let remainder = text;
+
+  for (const pattern of companyPatterns) {
+    const match = text.match(pattern);
+    if (match && match[1]) {
+      companyName = match[1].trim();
+      remainder = text.slice(match[1].length).trim();
+      break;
+    }
+  }
+
+  const docType = remainder.replace(/^[\-_/｜|:：\s]+|[\-_/｜|:：\s]+$/g, "").trim();
+
+  return [companyName, docType || (!companyName ? text : "")]
+    .map((item) => item.trim())
+    .filter(Boolean);
 }
 
 function escapeHtml(value) {
