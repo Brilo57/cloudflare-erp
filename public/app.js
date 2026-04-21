@@ -18,7 +18,7 @@ const elements = {
   billNoInput: document.getElementById("billNoInput"),
   resultMessage: document.getElementById("resultMessage"),
   resultCard: document.getElementById("resultCard"),
-  resultTitle: document.getElementById("resultTitle"),
+  resultSummary: document.getElementById("resultSummary"),
   resultState: document.getElementById("resultState"),
   resultBillNo: document.getElementById("resultBillNo"),
   resultStartUser: document.getElementById("resultStartUser"),
@@ -57,7 +57,7 @@ function hideMessage() {
 function clearResult() {
   state.processInstanceId = "";
   elements.resultCard.classList.add("hidden");
-  elements.resultTitle.textContent = "--";
+  elements.resultSummary.innerHTML = '<span class="result-summary-item">--</span>';
   elements.resultState.textContent = "--";
   elements.resultState.className = "status-pill";
   elements.resultBillNo.textContent = "--";
@@ -68,7 +68,7 @@ function clearResult() {
 
 function renderResult(data) {
   state.processInstanceId = data.processInstanceId;
-  elements.resultTitle.textContent = data.title || "未知流程";
+  renderResultSummary(data.title || "未知流程");
   elements.resultBillNo.textContent = data.billNo || "--";
   elements.resultStartUser.textContent = data.startUser || "--";
   elements.resultHandler.textContent = data.currentHandler || "--";
@@ -83,6 +83,37 @@ function renderResult(data) {
   }
 
   elements.resultCard.classList.remove("hidden");
+}
+
+function renderResultSummary(text) {
+  const parts = splitSummaryText(text);
+  elements.resultSummary.innerHTML = parts
+    .map((part) => `<span class="result-summary-item">${escapeHtml(part)}</span>`)
+    .join("");
+}
+
+function splitSummaryText(text) {
+  const normalized = String(text || "").replace(/\s+/g, " ").trim();
+
+  if (!normalized) {
+    return ["未知流程"];
+  }
+
+  const parts = normalized
+    .split(/\s+(?=[^\s：:]+[：:])/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+
+  return parts.length ? parts : [normalized];
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
 }
 
 async function postAction(action, payload = {}) {
