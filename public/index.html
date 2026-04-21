@@ -15,30 +15,16 @@
     <link rel="stylesheet" href="/app.css" />
   </head>
   <body>
+    <div class="page-noise" aria-hidden="true"></div>
     <main class="page-shell">
       <header class="topbar">
-        <div class="brand-mark" aria-hidden="true">∎</div>
+        <div class="brand-mark" aria-hidden="true"></div>
         <div class="topbar-copy">
-          <p class="eyebrow">Internal Utility</p>
+          <p class="eyebrow">Edge Control</p>
           <h1>流程终止工具</h1>
           <p class="subcopy">登录后即可查询单据并执行终止操作。</p>
         </div>
       </header>
-
-      <section class="intro-strip">
-        <div class="intro-item">
-          <span class="intro-label">用途</span>
-          <span class="intro-value">查询并终止流程</span>
-        </div>
-        <div class="intro-item">
-          <span class="intro-label">部署</span>
-          <span class="intro-value">Cloudflare Pages</span>
-        </div>
-        <div class="intro-item">
-          <span class="intro-label">安全</span>
-          <span class="intro-value">密码登录 + 边缘鉴权</span>
-        </div>
-      </section>
 
       <section class="panel" id="loginPanel">
         <div class="panel-head">
@@ -68,7 +54,7 @@
         <div class="panel-head panel-head-inline">
           <div>
             <h2>主操作区</h2>
-            <p>输入单据编号，查询到流程后可直接终止。</p>
+            <p>输入单据编号，确认流程后再执行终止。</p>
           </div>
           <button id="logoutButton" class="button button-secondary" type="button">
             退出
