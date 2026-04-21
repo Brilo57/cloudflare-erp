@@ -37,7 +37,7 @@ body {
   margin: 0;
   min-height: 100vh;
   color: var(--text);
-  font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+  font: 13px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
     "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   background:
     radial-gradient(circle at top left, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0) 38%),
@@ -73,14 +73,14 @@ button {
   position: relative;
   width: min(100%, 640px);
   margin: 0 auto;
-  padding: 36px 16px 48px;
+  padding: 30px 16px 42px;
 }
 
 .topbar {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  margin-bottom: 22px;
+  margin-bottom: 18px;
 }
 
 .brand-mark {
@@ -111,7 +111,7 @@ button {
 }
 
 .topbar-copy h1 {
-  font-size: clamp(2.25rem, 7vw, 3.4rem);
+  font-size: clamp(1.85rem, 5.8vw, 2.8rem);
   font-weight: 780;
   letter-spacing: -0.05em;
 }
@@ -119,7 +119,7 @@ button {
 .panel-head h2,
 .result-head h3,
 .confirm-card h2 {
-  font-size: 1.35rem;
+  font-size: 1.12rem;
   font-weight: 760;
   letter-spacing: -0.03em;
 }
@@ -127,7 +127,7 @@ button {
 .eyebrow {
   margin: 0 0 8px;
   color: var(--muted);
-  font-size: 0.76rem;
+  font-size: 0.68rem;
   font-weight: 650;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -137,7 +137,7 @@ button {
 .panel-head p,
 .result-grid dt,
 .confirm-card p {
-  margin: 10px 0 0;
+  margin: 8px 0 0;
   color: var(--muted);
 }
 
@@ -153,7 +153,7 @@ button {
 }
 
 .panel {
-  padding: 22px 18px 18px;
+  padding: 18px 16px 16px;
 }
 
 .panel + .panel {
@@ -161,7 +161,7 @@ button {
 }
 
 .panel-head {
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .panel-head-inline {
@@ -173,7 +173,7 @@ button {
 
 .stack {
   display: grid;
-  gap: 14px;
+  gap: 12px;
 }
 
 .field {
@@ -182,15 +182,15 @@ button {
 }
 
 .field span {
-  font-size: 0.88rem;
+  font-size: 0.8rem;
   font-weight: 620;
   color: #424242;
 }
 
 input {
   width: 100%;
-  min-height: 58px;
-  padding: 0 18px;
+  min-height: 48px;
+  padding: 0 14px;
   color: var(--text);
   background: rgba(255, 255, 255, 0.82);
   border: 1px solid var(--line);
@@ -198,7 +198,7 @@ input {
   outline: none;
   transition: border-color 0.16s ease, box-shadow 0.16s ease,
     background-color 0.16s ease;
-  font-size: 1rem;
+  font-size: 0.94rem;
 }
 
 input:focus {
@@ -209,15 +209,16 @@ input:focus {
 
 .inline-input {
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .button {
-  min-height: 54px;
-  padding: 0 20px;
+  min-height: 44px;
+  padding: 0 16px;
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
-  font-weight: 720;
+  font-size: 0.92rem;
+  font-weight: 700;
   transition: transform 0.12s ease, background-color 0.12s ease,
     border-color 0.12s ease, opacity 0.12s ease, box-shadow 0.12s ease;
   white-space: nowrap;
@@ -265,11 +266,12 @@ input:focus {
 }
 
 .message {
-  margin-top: 16px;
-  padding: 14px 16px;
+  margin-top: 14px;
+  padding: 12px 14px;
   border-radius: var(--radius-sm);
   border: 1px solid transparent;
   font-weight: 500;
+  font-size: 0.88rem;
 }
 
 .message.is-success {
@@ -285,8 +287,8 @@ input:focus {
 }
 
 .result-card {
-  margin-top: 18px;
-  padding: 20px 18px 18px;
+  margin-top: 16px;
+  padding: 18px 16px 16px;
 }
 
 .result-head {
@@ -294,7 +296,7 @@ input:focus {
   align-items: flex-start;
   justify-content: space-between;
   gap: 14px;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .result-head-main {
@@ -305,21 +307,21 @@ input:focus {
 .result-summary {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
+  gap: 6px;
+  margin-top: 8px;
 }
 
 .result-summary-item {
   display: inline-flex;
   align-items: center;
   max-width: 100%;
-  min-height: 32px;
-  padding: 6px 10px;
+  min-height: 28px;
+  padding: 5px 8px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.72);
   color: var(--text);
-  font-size: 0.94rem;
+  font-size: 0.84rem;
   font-weight: 620;
   line-height: 1.45;
   white-space: normal;
@@ -330,13 +332,13 @@ input:focus {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 34px;
-  padding: 0 14px;
+  min-height: 28px;
+  padding: 0 10px;
   border-radius: 999px;
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.84);
   color: var(--text);
-  font-size: 0.84rem;
+  font-size: 0.76rem;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -356,12 +358,12 @@ input:focus {
 .result-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: 10px;
   margin: 0;
 }
 
 .result-grid div {
-  padding: 14px;
+  padding: 12px;
   border: 1px solid var(--line);
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.56);
@@ -369,25 +371,26 @@ input:focus {
 
 .result-grid dt {
   margin: 0 0 6px;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   letter-spacing: 0.02em;
 }
 
 .result-grid dd {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 640;
   word-break: break-word;
 }
 
 .notice {
-  margin: 18px 0;
-  padding: 14px 16px;
+  margin: 16px 0;
+  padding: 12px 14px;
   border: 1px solid rgba(251, 146, 60, 0.22);
   border-left: 4px solid #fb923c;
   border-radius: 10px;
   background: linear-gradient(180deg, rgba(255, 247, 237, 0.9), rgba(255, 247, 237, 0.72));
   color: var(--warning-text);
+  font-size: 0.84rem;
 }
 
 .confirm-dialog {
@@ -402,14 +405,14 @@ input:focus {
 }
 
 .confirm-card {
-  padding: 22px 18px 18px;
+  padding: 18px 16px 16px;
 }
 
 .confirm-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 20px;
+  gap: 10px;
+  margin-top: 16px;
 }
 
 #queryButton,
@@ -419,16 +422,16 @@ input:focus {
 
 @media (min-width: 640px) {
   .page-shell {
-    padding-top: 52px;
+    padding-top: 40px;
   }
 
   .panel,
   .result-card {
-    padding: 24px;
+    padding: 20px;
   }
 
   .inline-input {
-    grid-template-columns: minmax(0, 1fr) 156px;
+    grid-template-columns: minmax(0, 1fr) 132px;
     align-items: center;
   }
 }
