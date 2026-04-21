@@ -17,13 +17,28 @@
   <body>
     <main class="page-shell">
       <header class="topbar">
-        <div class="brand-mark" aria-hidden="true">CY</div>
+        <div class="brand-mark" aria-hidden="true">∎</div>
         <div class="topbar-copy">
-          <p class="eyebrow">Cloudflare Edge Tool</p>
+          <p class="eyebrow">Internal Utility</p>
           <h1>流程终止工具</h1>
           <p class="subcopy">登录后即可查询单据并执行终止操作。</p>
         </div>
       </header>
+
+      <section class="intro-strip">
+        <div class="intro-item">
+          <span class="intro-label">用途</span>
+          <span class="intro-value">查询并终止流程</span>
+        </div>
+        <div class="intro-item">
+          <span class="intro-label">部署</span>
+          <span class="intro-value">Cloudflare Pages</span>
+        </div>
+        <div class="intro-item">
+          <span class="intro-label">安全</span>
+          <span class="intro-value">密码登录 + 边缘鉴权</span>
+        </div>
+      </section>
 
       <section class="panel" id="loginPanel">
         <div class="panel-head">
@@ -85,7 +100,7 @@
         <section class="result-card hidden" id="resultCard">
           <div class="result-head">
             <div>
-              <p class="eyebrow">查询结果</p>
+              <p class="eyebrow">Process Snapshot</p>
               <h3 id="resultTitle">--</h3>
             </div>
             <span class="status-pill" id="resultState">--</span>
