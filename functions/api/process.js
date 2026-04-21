@@ -103,6 +103,8 @@ async function handleQuery(context, body) {
       billNo: result.billNo,
       processInstanceId: result.processInstanceId,
       title: result.title,
+      companyName: result.companyName,
+      docType: result.docType,
       state: result.state,
       suspensionState: result.suspensionState,
       startUser: result.startUser,
@@ -147,12 +149,16 @@ async function getProcessInstance(env, billNo) {
     const row = rows[0];
     const startUserRaw = String(row.starusernameformat || "");
     const suspensionStateCode = Number(row.suspensionstate || 0);
+    const title = String(row.subject || row.name || "未知流程");
+    const summary = parseProcessSummary(title, billNo);
 
     return {
       found: true,
       billNo,
       processInstanceId: String(row.processinstanceid || ""),
-      title: String(row.subject || row.name || "未知流程"),
+      title,
+      companyName: summary.companyName,
+      docType: summary.docType,
       state: row.active ? "运行中" : "已结束",
       suspensionState:
         suspensionStateCode === 1
@@ -318,6 +324,86 @@ function getCookie(cookieHeader, name) {
 
 function stripTrailingSlash(value) {
   return String(value || "").replace(/\/+$/, "");
+}
+
+function parseProcessSummary(title, billNo) {
+  const normalizedTitle = String(title || "").replace(/\s+/g, " ").trim();
+  const normalizedBillNo = String(billNo || "").trim();
+
+  if (!normalizedTitle) {
+    return { companyName: "", docType: "" };
+  }
+
+  let summary = normalizedTitle;
+  if (normalizedBillNo) {
+    summary = summary.replaceAll(normalizedBillNo, " ").replace(/\s+/g, " ").trim();
+  }
+
+  const cleaned = cleanupSummaryText(summary);
+  const { companyName, remainder } = extractCompanyName(cleaned);
+  const docType = extractDocType(remainder || cleaned);
+
+  return {
+    companyName,
+    docType: docType || (!companyName ? cleaned : ""),
+  };
+}
+
+function cleanupSummaryText(text) {
+  return String(text || "")
+    .replace(/[，,]\s*(供应商|申请人|申请金额|金额|价税合计|收款单位|客户|供应商名称|往来单位|币别)[^，,;；]*/g, "")
+    .replace(/￥\s*[\d,.]+/g, "")
+    .replace(/\b\d+(?:\.\d+)?\s*元\b/g, "")
+    .replace(/[：:]\s*[，,]/g, " ")
+    .replace(/[，,;；]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function extractCompanyName(text) {
+  const companyPatterns = [
+    /(.*?(?:有限责任公司|股份有限公司|集团有限公司|有限公司))/,
+    /(.*?(?:公司))/,
+  ];
+
+  for (const pattern of companyPatterns) {
+    const match = String(text || "").match(pattern);
+    if (match && match[1]) {
+      return {
+        companyName: match[1].trim(),
+        remainder: String(text).slice(match[1].length).trim(),
+      };
+    }
+  }
+
+  return {
+    companyName: "",
+    remainder: String(text || "").trim(),
+  };
+}
+
+function extractDocType(text) {
+  const normalized = String(text || "")
+    .replace(/^[\-_/｜|:：\s]+|[\-_/｜|:：\s]+$/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!normalized) {
+    return "";
+  }
+
+  const typePattern =
+    /((?:采购|销售|付款|收款|费用|借款|请购|入库|出库|调拨|报销|付款申请|收款申请|退款|退货|生产|委外|采购退货|销售退货|发货|送货|验收|盘点|合同|订单|申请|审批|结算)[^\s，,;；]*?(?:单|订单|申请单|出库单|入库单|付款单|收款单|通知单|审批单))/;
+
+  const match = normalized.match(typePattern);
+  if (match && match[1]) {
+    return match[1].trim();
+  }
+
+  return normalized
+    .split(/[，,;；]/)
+    .map((item) => item.trim())
+    .find(Boolean) || normalized;
 }
 
 function formatKingdeeTimestamp(date) {
